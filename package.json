@@ -1,0 +1,19 @@
+{
+  "name": "starlight",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/lodash": "^4.17.18",
+    "@types/luxon": "^3.6.2"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "luxon": "^3.6.1",
+    "zod": "^3.25.67"
+  }
+}
