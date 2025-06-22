@@ -113,7 +113,8 @@ export async function stationDepartures(stationCode: string): Promise<Trip[]> {
       .data.filter(
         (trip) =>
           !!trip.departure &&
-          !["THRU", "TEMP", "SLFT"].includes(trip.travelService.name.code)
+          !["THRU", "TEMP", "SLFT"].includes(trip.travelService.name.code) &&
+          !!trip.travelService.destination.name
       ),
     "departure.schedule.dateTime"
   );
