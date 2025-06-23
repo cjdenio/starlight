@@ -73,8 +73,10 @@ export function departureStatus(trip: Trip): DepartureStatus {
   if (trip.departure?.statusInfo.status == "CANCELED") {
     return "canceled";
   } else if (
-    trip.departure?.statusInfo.dateTimeType == "ACTUAL" &&
-    DateTime.fromISO(trip.departure.statusInfo.dateTime!) < DateTime.now()
+    (
+      trip.departure?.statusInfo.dateTimeType == "ACTUAL" &&
+      DateTime.fromISO(trip.departure.statusInfo.dateTime!) < DateTime.now()
+    ) || trip.departure?.statusInfo.displayStatus.toLowerCase().trim() == "departed"
   ) {
     return "departed";
   } else if (
