@@ -52,6 +52,11 @@ const Trip = z.object({
       code: z.string(),
       description: z.string(),
     }),
+    operator: z.object({
+      code: z.string(),
+      description: z.string().optional(),
+      number: z.string().optional(),
+    }),
     origin: Station,
     destination: Station,
   }),
@@ -73,10 +78,9 @@ export function departureStatus(trip: Trip): DepartureStatus {
   if (trip.departure?.statusInfo.status == "CANCELED") {
     return "canceled";
   } else if (
-    (
-      trip.departure?.statusInfo.dateTimeType == "ACTUAL" &&
-      DateTime.fromISO(trip.departure.statusInfo.dateTime!) < DateTime.now()
-    ) || trip.departure?.statusInfo.displayStatus.toLowerCase().trim() == "departed"
+    (trip.departure?.statusInfo.dateTimeType == "ACTUAL" &&
+      DateTime.fromISO(trip.departure.statusInfo.dateTime!) < DateTime.now()) ||
+    trip.departure?.statusInfo.displayStatus.toLowerCase().trim() == "departed"
   ) {
     return "departed";
   } else if (
@@ -116,6 +120,7 @@ export async function stationDepartures(stationCode: string): Promise<Trip[]> {
         (trip) =>
           !!trip.departure &&
           !["THRU", "TEMP", "SLFT"].includes(trip.travelService.name.code) &&
+          trip.travelService.operator.code == "AMTK" &&
           !!trip.travelService.destination.name &&
           trip.travelService.destination.code != stationCode // if the train's destination is our current station, it's not a departure, it's an arrival
       ),
