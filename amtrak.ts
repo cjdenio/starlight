@@ -114,7 +114,8 @@ export async function stationDepartures(stationCode: string): Promise<Trip[]> {
         (trip) =>
           !!trip.departure &&
           !["THRU", "TEMP", "SLFT"].includes(trip.travelService.name.code) &&
-          !!trip.travelService.destination.name
+          !!trip.travelService.destination.name &&
+          trip.travelService.destination.code != stationCode // if the train's destination is our current station, it's not a departure, it's an arrival
       ),
     "departure.schedule.dateTime"
   );
